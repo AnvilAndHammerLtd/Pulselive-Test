@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pulselive Test</string>
+    <string name="single_number">%1$d</string>
+    <string name="string_space_string">%1$s %2$s</string>
+
+    <string name="request_failure_content_list">Failed to receive content list</string>
+    <string name="request_failure_content_detail">Failed to receive content detail</string>
+    <string name="retry">Retry</string>
+
+    <string name="date">Date</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="body">Body</string>
+    <string name="title">Title</string>
+    <string name="id">ID</string>
+</resources>

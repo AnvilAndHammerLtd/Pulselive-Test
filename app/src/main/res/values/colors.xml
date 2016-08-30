@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/bondi_blue</color>
+    <color name="colorPrimaryDark">@color/bondi_blue</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="windowBackground">@color/main_body</color>
+
+    <color name="white">#ffffff</color>
+    <color name="mine_shaft">#3e3e3e</color>
+    <color name="concrete">#f3f3f3</color>
+    <color name="gallery">#eeeeee</color>
+    <color name="bondi_blue">#0a8cb3</color>
+
+    <color name="main_header">@color/concrete</color>
+    <color name="main_body">@color/gallery</color>
+</resources>
