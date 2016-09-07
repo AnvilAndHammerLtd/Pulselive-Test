@@ -22,8 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<include layout="@layout/fragment_content_list" />-->
-
     <RelativeLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"

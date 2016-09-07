@@ -6,9 +6,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 
 import com.kyriakosalexandrou.pulselive.R;
+import com.kyriakosalexandrou.pulselive.ui.snackbar.AppSnackbarEmpty;
+import com.kyriakosalexandrou.pulselive.ui.snackbar.AppSnackbar;
 
 public class BaseFragment extends Fragment {
     protected CoordinatorLayout mCoordinatorLayout;
+    protected AppSnackbar mAppSnackbar = new AppSnackbarEmpty();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

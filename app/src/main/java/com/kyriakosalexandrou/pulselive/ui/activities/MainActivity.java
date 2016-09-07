@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        goToContentListFragment();
+        goToBasicItemListFragment();
     }
 
-    private void goToContentListFragment() {
+    private void goToBasicItemListFragment() {
         FragmentManager fm = getSupportFragmentManager();
         ContentListFragment fragment = new ContentListFragment();
         FragmentTransaction ft = fm.beginTransaction();

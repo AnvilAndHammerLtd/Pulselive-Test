@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.kyriakosalexandrou.pulselive.App;
 import com.kyriakosalexandrou.pulselive.R;
-import com.kyriakosalexandrou.pulselive.models.ContentDetail;
+import com.kyriakosalexandrou.pulselive.models.ItemWithDetails;
 
 public class ContentDetailFragment extends BaseFragment {
     public static final String TAG = ContentDetailFragment.class.getName();
@@ -21,11 +21,11 @@ public class ContentDetailFragment extends BaseFragment {
     private TextView mDate;
     private TextView mBody;
 
-    public static ContentDetailFragment instance(ContentDetail contentDetail) {
+    public static ContentDetailFragment instance(ItemWithDetails itemWithDetails) {
         ContentDetailFragment contentDetailFragment = new ContentDetailFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_CONTENT_DETAIL, contentDetail);
+        bundle.putSerializable(EXTRA_CONTENT_DETAIL, itemWithDetails);
         contentDetailFragment.setArguments(bundle);
 
         return contentDetailFragment;
@@ -37,8 +37,8 @@ public class ContentDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_content_detail, container, false);
         bindViews(view);
 
-        ContentDetail contentDetail = (ContentDetail) getArguments().get(EXTRA_CONTENT_DETAIL);
-        setUpContentDetail(contentDetail);
+        ItemWithDetails itemWithDetails = (ItemWithDetails) getArguments().get(EXTRA_CONTENT_DETAIL);
+        setUpContentDetail(itemWithDetails);
         return view;
     }
 
@@ -50,11 +50,11 @@ public class ContentDetailFragment extends BaseFragment {
         mDate = (TextView) view.findViewById(R.id.date_value);
     }
 
-    private void setUpContentDetail(ContentDetail contentDetail) {
-        mId.setText(App.getContext().getResources().getString(R.string.single_number, contentDetail.getItem().getId()));
-        mTitle.setText(contentDetail.getItem().getTitle());
-        mSubtitle.setText(contentDetail.getItem().getSubtitle());
-        mBody.setText(contentDetail.getItem().getBody());
-        mDate.setText(contentDetail.getItem().getDate());
+    private void setUpContentDetail(ItemWithDetails itemWithDetails) {
+        mId.setText(App.getContext().getResources().getString(R.string.single_number, itemWithDetails.getBasicItem().getId()));
+        mTitle.setText(itemWithDetails.getBasicItem().getTitle());
+        mSubtitle.setText(itemWithDetails.getBasicItem().getSubtitle());
+        mBody.setText(itemWithDetails.getBody());
+        mDate.setText(itemWithDetails.getBasicItem().getDate());
     }
 }

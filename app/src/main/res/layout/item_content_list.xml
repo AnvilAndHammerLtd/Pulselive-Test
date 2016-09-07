@@ -19,42 +19,42 @@
 
             <TextView
                 android:id="@+id/id"
-                style="@style/Text.Bold"
+                style="@style/ContentTitle"
                 android:text="@string/id" />
 
             <TextView
                 android:id="@+id/id_value"
-                style="@style/Text"
+                style="@style/ContentValue"
                 tools:text="34" />
 
             <TextView
                 android:id="@+id/title"
-                style="@style/Text.Bold"
+                style="@style/ContentTitle"
                 android:text="@string/title" />
 
             <TextView
                 android:id="@+id/title_value"
-                style="@style/Text"
+                style="@style/ContentValue"
                 tools:text="Article 6" />
 
             <TextView
                 android:id="@+id/subtitle"
-                style="@style/Text.Bold"
+                style="@style/ContentTitle"
                 android:text="@string/subtitle" />
 
             <TextView
                 android:id="@+id/subtitle_value"
-                style="@style/Text"
+                style="@style/ContentValue"
                 tools:text="Article 6 subtitle with placeholder text" />
 
             <TextView
                 android:id="@+id/date"
-                style="@style/Text.Bold"
+                style="@style/ContentTitle"
                 android:text="@string/date" />
 
             <TextView
                 android:id="@+id/date_value"
-                style="@style/Text"
+                style="@style/ContentValue"
                 tools:text="16/04/2013 11:48" />
 
         </LinearLayout>

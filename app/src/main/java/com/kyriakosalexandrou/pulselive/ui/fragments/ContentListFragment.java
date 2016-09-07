@@ -13,22 +13,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kyriakosalexandrou.pulselive.R;
-import com.kyriakosalexandrou.pulselive.Util;
-import com.kyriakosalexandrou.pulselive.models.ContentDetail;
-import com.kyriakosalexandrou.pulselive.models.ContentList;
-import com.kyriakosalexandrou.pulselive.models.ContentListItem;
-import com.kyriakosalexandrou.pulselive.services.ContentDetailService;
+import com.kyriakosalexandrou.pulselive.models.BasicItem;
+import com.kyriakosalexandrou.pulselive.models.ItemWithDetails;
+import com.kyriakosalexandrou.pulselive.services.ContentDetailsService;
 import com.kyriakosalexandrou.pulselive.services.ContentListService;
 import com.kyriakosalexandrou.pulselive.ui.adapters.ContentListAdapter;
+import com.kyriakosalexandrou.pulselive.ui.snackbar.AppSnackbarImpl;
 import com.kyriakosalexandrou.pulselive.widgets.AppSwipeRefreshLayout;
 
-public class ContentListFragment extends BaseFragment implements ContentListAdapter.ContentListAdapterCallback, ContentListService.ContentListServiceCallback, ContentDetailService.ContentDetailServiceCallback {
+import java.util.List;
+
+public class ContentListFragment extends BaseFragment implements ContentListAdapter.ContentListAdapterCallback, ContentListService.ContentListServiceCallback, ContentDetailsService.ContentDetailServiceCallback {
     public static final String TAG = ContentListFragment.class.getName();
 
     private RecyclerView mContentListRecycler;
     private AppSwipeRefreshLayout mAppSwipeRefreshLayout;
 
-    private ContentList mContentList;
+    private List<BasicItem> mBasicItems;
     private ContentListAdapter mContentListAdapter;
 
     @Nullable
@@ -76,49 +77,68 @@ public class ContentListFragment extends BaseFragment implements ContentListAdap
     }
 
     @Override
-    public void onContentListSuccess(ContentList contentList) {
+    public void onContentListRequestSuccess(List<BasicItem> basicItem) {
         mAppSwipeRefreshLayout.setRefreshing(false);
-        updateContentList(contentList);
+        mAppSnackbar.dismissSnackbar();
+        updateContentList(basicItem);
     }
 
     @Override
-    public void onServiceRequestFailure(String errorMsg) {
+    public void onContentListRequestFailure(String errorMsg) {
         mAppSwipeRefreshLayout.setRefreshing(false);
 
-        Util.showSnackbar(mCoordinatorLayout, errorMsg, getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE, new View.OnClickListener() {
+        mAppSnackbar = new AppSnackbarImpl(mCoordinatorLayout, errorMsg, getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestContentListData();
             }
         });
-    }
 
-    private void updateContentList(ContentList contentList) {
-        mContentList = contentList;
-        mContentListAdapter.clear();
-        mContentListAdapter.addAll(mContentList.getItems());
+        mAppSnackbar.showSnackbar();
     }
 
     @Override
-    public void onContentListItemClicked(int position, ContentListItem item) {
-        requestContentDetailData(item.getId());
-    }
-
-    private void requestContentDetailData(int itemId) {
-        mAppSwipeRefreshLayout.setRefreshing(true);
-        ContentDetailService contentDetailService = new ContentDetailService(itemId, this, getString(R.string.request_failure_content_detail));
-        contentDetailService.requestData();
-    }
-
-    @Override
-    public void onContentDetailSuccess(ContentDetail contentDetail) {
+    public void onContentDetailRequestFailure(final BasicItem basicItemRequested, String errorMsg) {
         mAppSwipeRefreshLayout.setRefreshing(false);
-        goToContentDetailFragment(contentDetail);
+
+        mAppSnackbar = new AppSnackbarImpl(mCoordinatorLayout, errorMsg, getResources().getString(R.string.retry), Snackbar.LENGTH_INDEFINITE, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestContentDetailData(basicItemRequested);
+            }
+        });
+
+        mAppSnackbar.showSnackbar();
     }
 
-    private void goToContentDetailFragment(ContentDetail contentDetail) {
+    private void updateContentList(List<BasicItem> basicItems) {
+        mBasicItems = basicItems;
+        mContentListAdapter.clear();
+        mContentListAdapter.addAll(mBasicItems);
+    }
+
+    @Override
+    public void onContentListItemClicked(BasicItem basicItem) {
+        requestContentDetailData(basicItem);
+    }
+
+    private void requestContentDetailData(final BasicItem basicItem) {
+        mAppSwipeRefreshLayout.setRefreshing(true);
+        ContentDetailsService contentDetailsService = new ContentDetailsService(basicItem, this, getString(R.string.request_failure_content_detail, basicItem.getId()));
+        contentDetailsService.requestData();
+    }
+
+    @Override
+    public void onContentDetailRequestSuccess(final ItemWithDetails itemWithDetails) {
+        mAppSwipeRefreshLayout.setRefreshing(false);
+
+        mAppSnackbar.dismissSnackbar();
+        goToContentDetailFragment(itemWithDetails);
+    }
+
+    private void goToContentDetailFragment(ItemWithDetails itemWithDetails) {
         FragmentManager fm = getFragmentManager();
-        ContentDetailFragment fragment = ContentDetailFragment.instance(contentDetail);
+        ContentDetailFragment fragment = ContentDetailFragment.instance(itemWithDetails);
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.fragment, fragment, ContentDetailFragment.TAG);
         ft.addToBackStack(ContentDetailFragment.TAG);

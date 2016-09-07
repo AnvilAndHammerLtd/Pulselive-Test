@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import com.kyriakosalexandrou.pulselive.App;
 import com.kyriakosalexandrou.pulselive.R;
-import com.kyriakosalexandrou.pulselive.models.ContentListItem;
+import com.kyriakosalexandrou.pulselive.models.BasicItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.ContentListViewHolder> {
-    private ArrayList<ContentListItem> mItems = new ArrayList<>();
+    private List<BasicItem> mBasicItems = new ArrayList<>();
     private ContentListAdapterCallback mContentListAdapterCallback;
 
     public ContentListAdapter(ContentListAdapterCallback contentListAdapterCallback) {
@@ -29,39 +29,39 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
     @Override
     public void onBindViewHolder(final ContentListViewHolder holder, final int position) {
-        ContentListItem item = mItems.get(position);
-        updateViewsContent(holder, item);
-        setListeners(holder, item, position);
+        BasicItem basicItem = mBasicItems.get(position);
+        updateViewsContent(holder, basicItem);
+        setListeners(holder, basicItem, position);
     }
 
-    private void updateViewsContent(final ContentListViewHolder holder, final ContentListItem item) {
-        holder.mId.setText(App.getContext().getResources().getString(R.string.single_number, item.getId()));
-        holder.mTitle.setText(item.getTitle());
-        holder.mSubtitle.setText(item.getSubtitle());
-        holder.mDate.setText(item.getDate());
+    private void updateViewsContent(final ContentListViewHolder holder, final BasicItem basicItem) {
+        holder.mId.setText(App.getContext().getResources().getString(R.string.single_number, basicItem.getId()));
+        holder.mTitle.setText(basicItem.getTitle());
+        holder.mSubtitle.setText(basicItem.getSubtitle());
+        holder.mDate.setText(basicItem.getDate());
     }
 
-    private void setListeners(final ContentListViewHolder holder, final ContentListItem item, final int position) {
+    private void setListeners(final ContentListViewHolder holder, final BasicItem basicItem, final int position) {
         holder.mMainContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContentListAdapterCallback.onContentListItemClicked(position, item);
+                mContentListAdapterCallback.onContentListItemClicked(basicItem);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mBasicItems.size();
     }
 
     public void clear() {
-        mItems.clear();
+        mBasicItems.clear();
         notifyDataSetChanged();
     }
 
-    public void addAll(List<ContentListItem> items) {
-        mItems.addAll(items);
+    public void addAll(List<BasicItem> basicItems) {
+        mBasicItems.addAll(basicItems);
         notifyDataSetChanged();
     }
 
@@ -83,6 +83,6 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
     }
 
     public interface ContentListAdapterCallback {
-        void onContentListItemClicked(int position, ContentListItem item);
+        void onContentListItemClicked(BasicItem basicItem);
     }
 }
