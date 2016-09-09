@@ -25,7 +25,7 @@ public class ContentDetailFragment extends BaseFragment {
         ContentDetailFragment contentDetailFragment = new ContentDetailFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_CONTENT_DETAIL, itemWithDetails);
+        bundle.putParcelable(EXTRA_CONTENT_DETAIL, itemWithDetails);
         contentDetailFragment.setArguments(bundle);
 
         return contentDetailFragment;
